@@ -1,0 +1,152 @@
+/* * {
+  box-sizing: border-box;
+} */
+ *{
+   box-sizing: border-box;
+ }
+
+/* body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f1e8;
+  color: #2f241f;
+} */
+
+body{
+   margin: 0;
+   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+   background-color: #ffe0d5;
+   color: #5f2121;
+}
+
+/* h1 {
+  margin: 0;
+  padding: 30px 20px;
+  text-align: center;
+  color: #8b2e16;
+  font-size: 42px;
+} */
+
+h1{
+   margin: 0;
+   padding: 30px 20px;
+   text-align: center;
+   color: #8b2e16;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   font-size: 42px;
+
+}
+
+/* h2 {
+  max-width: 1200px;
+  margin: 30px auto 15px;
+  padding: 0 20px;
+  color: #5d2114;
+  font-size: 26px;
+  border-left: 5px solid #d88924;
+} */
+
+h2{
+   max-width: 1000px;
+   margin: 30px auto 15px;
+   padding: 0 20px;
+   color: rgb(0, 0, 0);
+   font-size: 26px;
+   /* border-left: 5px solid #d88924; */
+}
+
+/* .card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 20px 20px;
+} */
+
+.card-container{
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(220px, 2fr));
+   gap: 20px;
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 10px 20px 20pxs;
+}
+
+/* The outer div inside Dish */
+/* .card {
+  height: 100%;
+  background-color: white;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #eadcca;
+  box-shadow: 0 5px 15px rgba(70, 42, 20, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  padding: 10px;
+} */
+
+.card{
+   height: 100%;
+   background-color: white;
+   border-radius: 15px;
+   overflow: hidden;
+   border: 1px solid #eadcca;
+   padding: 10px;
+   transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 22px rgba(70, 42, 20, 0.2);
+} */
+
+.card:hover{
+   transform: translateY(-6px);
+}
+
+/* The div rendered by Card */
+/* .card > div {
+  height: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
+
+.card > div{
+   height: 100%;
+   padding: 24px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+}
+
+/* .card h2 {
+  margin: 0 0 14px;
+  padding: 0;
+  border: none;
+  color: #8b2e16;
+  font-size: 23px;
+} */
+
+.card p {
+  margin: 8px 0;
+  color: #66544a;
+  font-size: 16px;
+}
+
+.card p:first-of-type {
+  color: #d26a1d;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.card strong {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background-color: #ffe0d5;
+  color: #c0392b;
+  font-size: 14px;
+}

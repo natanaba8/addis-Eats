@@ -1,0 +1,46 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Doro wot",
+      "price": 120,
+      "category": "Main course",
+      "isSpicy": true
+    },
+    {
+      "id": 2,
+      "name": "Injera",
+      "price": 100,
+      "category": "Side Menu",
+      "isSpicy": false
+    },
+    {
+      "id": 3,
+      "name": "Kitfo",
+      "price": 120,
+      "category": "Beverage",
+      "isSpicy": true
+    },
+    {
+      "id": 4,
+      "name": "Gomen",
+      "price": 130,
+      "category": "Main course",
+      "isSpicy": false
+    },
+    {
+      "id": 5,
+      "name": "Beyaynet",
+      "price": 140,
+      "category": "Side Menu",
+      "isSpicy": true
+    },
+    {
+      "id": 6,
+      "name": "Qiqle",
+      "price": 150,
+      "category": "Beverage",
+      "isSpicy": false
+    }
+  ]
+}
