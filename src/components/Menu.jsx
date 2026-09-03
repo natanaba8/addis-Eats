@@ -11,15 +11,20 @@ function Menu() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function loadMenu() {
       try {
-        const response = await fetch("/dishes.json");
+        const response = await fetch("/dishes.json", { signal: controller.signal });
         if (!response.ok) {
           throw new Error(`Failed to fetch dishes: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
         setDishes(data);
       } catch (fetchError) {
+        if (fetchError.name === "AbortError") {
+          return;
+        }
         setError(fetchError.message);
       } finally {
         setLoading(false);
@@ -27,6 +32,8 @@ function Menu() {
     }
 
     loadMenu();
+
+    return () => controller.abort();
   }, [category]);
 
   const filteredDishes = category === "All"
