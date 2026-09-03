@@ -74,6 +74,7 @@ function Menu() {
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
+        <CategoryBar selected={category} onSelect={handleCategoryChange} />
         <p>Loading menu...</p>
       </main>
     );
@@ -90,6 +91,7 @@ function Menu() {
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
+        <CategoryBar selected={category} onSelect={handleCategoryChange} />
         <p role="alert">Error loading menu: {error}</p>
       </main>
     );
@@ -97,8 +99,6 @@ function Menu() {
 
   return (
     <main>
-      <h2>Addis Eats - Our Menu</h2>
-      <p className="order-total">Order total: {total} ETB</p>
       <input
         ref={searchInputRef}
         type="search"
@@ -107,6 +107,8 @@ function Menu() {
         value={search}
         onChange={(event) => setSearch(event.target.value)}
       />
+      <h2>Addis Eats - Our Menu</h2>
+      <p className="order-total">Order total: {total} ETB</p>
       <CategoryBar selected={category} onSelect={handleCategoryChange} />
       <DishList dishes={visibleDishes} onAdd={addToOrder} />
       <OrderForm />
