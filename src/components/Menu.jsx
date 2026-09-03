@@ -27,7 +27,7 @@ function Menu() {
     }
 
     loadMenu();
-  }, []);
+  }, [category]);
 
   const filteredDishes = category === "All"
     ? dishes
@@ -39,6 +39,12 @@ function Menu() {
 
   function addToOrder(price) {
     setTotal((previousTotal) => previousTotal + price);
+  }
+
+  function handleCategoryChange(nextCategory) {
+    setLoading(true);
+    setError(null);
+    setCategory(nextCategory);
   }
 
   if (loading) {
@@ -53,7 +59,7 @@ function Menu() {
     <main>
       <h2>Addis Eats - Our Menu</h2>
       <p className="order-total">Order total: {total} ETB</p>
-      <CategoryBar selected={category} onSelect={setCategory} />
+      <CategoryBar selected={category} onSelect={handleCategoryChange} />
       <DishList dishes={filteredDishes} onAdd={addToOrder} />
       <OrderForm />
     </main>
