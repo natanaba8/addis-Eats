@@ -1,26 +1,15 @@
-import { useEffect } from "react";
-import "../css/style.css"
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
+import "../css/style.css";
 
 function Header(){
 
-    // useEffect(useEffect, effectcall ? : effectcall)
+    const {cart} = useContext(CartContext);
 
-    useEffect(() => {
-        // console.log("Header Component");
-        async function fetchData() {
-            try{
-                const response = await fetch("https://api.example.com");
-                const data = await response.json();
-            } catch(error){
-                console.log("Error fetching data:", error)
-            }
-            
-        }
-
-        fetchData()
-    }, [])
-    return <div>
+    return <header>
         <h1>My First React app</h1>
-    </div>
+        <h2>Cart Item : {cart.length}</h2>
+
+    </header>
 }
 export default Header;

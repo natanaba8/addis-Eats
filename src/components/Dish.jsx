@@ -1,38 +1,36 @@
-import React from 'react'
-import { useState } from 'react';
-// import PropTypes from 'prop-types'
-import Card from './Card'
-import "../css/style.css"
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
+import "../css/style.css";
 
-function Dish({name, price, category, isSpicy, currency="ETB", onAdd}) {
-  // let count =0;
-  // function add(){
-  //   count = count+1;
-  //   console.log(count);
-  // }
+function Dish({ id, name, price, category, isSpicy, onAdd }) {
+  const { cart, dispatch } = useContext(CartContext);
+  const isInCart = cart.some((item) => item.id === id);
 
-  // const [count, setCount] = useState(0);
-
-  // function add(){
-  //   setCount(count + 1);
-  // }
+  function handleAdd() {
+    onAdd(price);
+    dispatch({
+      type: "Add",
+      payload: { id, name, price, category, isSpicy },
+    });
+  }
 
   return (
-    <div>
+    <article className="dish-card">
       <h3>{name}</h3>
       <p>Price: {price} ETB</p>
       <p>Category: {category}</p>
       <p>{isSpicy ? "Spicy" : "Not spicy"}</p>
 
-      <button className='Add-Order' onClick={onAdd}>Add to order</button>
-    </div>
-  )
+      {isInCart ? (
+        <button onClick={() => dispatch({ type: "Remove", payload: { id } })}>
+          Remove from cart
+        </button>
+      ) : (
+        <button className="Add-Order" onClick={handleAdd}>
+          Add to order
+        </button>
+      )}
+    </article>
+  );
 }
-
-// Dish.propTypes = {
-//   name: PropTypes.string.isRequired,
-//   price: PropTypes.number.isRequired,
-//   isSpicy: PropTypes.bool, // optional
-//   category: PropTypes.string.isRequired,
-// };
-export default Dish
+export default Dish;

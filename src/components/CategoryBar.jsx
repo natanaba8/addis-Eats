@@ -1,14 +1,19 @@
-import React from 'react'
+function CategoryBar({ selected, onSelect }) {
+    const categories = ["All", "Main course", "Side Menu", "Beverage"];
 
-function CategoryBar({onSelectCategory}) {
-    const categories = ["All", "Main Course", "Side Dish","Beverage"];
   return (
-    <div>
+    <div className="category-bar">
       {categories.map((cat)=>(
-        <button onClick={() => onSelectCategory(cat)} key={cat}>{cat}</button>
+        <button
+          className={selected === cat ? "category-chip active" : "category-chip"}
+          onClick={() => onSelect(cat)}
+          key={cat}
+        >
+          {cat}
+        </button>
       ))}
     </div>
-  )
+  );
 }
 
 export default CategoryBar
