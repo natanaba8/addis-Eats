@@ -30,6 +30,10 @@ function Menu() {
     ? dishes
     : dishes.filter((dish) => dish.category === category);
 
+  useEffect(() => {
+    document.title = `${filteredDishes.length} dishes`;
+  }, [filteredDishes.length]);
+
   function addToOrder(price) {
     setTotal((previousTotal) => previousTotal + price);
   }
