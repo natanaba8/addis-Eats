@@ -12,12 +12,12 @@ function Menu() {
   useEffect(() => {
     async function loadMenu() {
       try {
-        const response = await fetch("/menu.json");
+        const response = await fetch("/dishes.json");
         if (!response.ok) {
           throw new Error("Failed to fetch menu data");
         }
         const data = await response.json();
-        setDishes(data.items);
+        setDishes(data);
       } catch (fetchError) {
         setError(fetchError.message);
       }
