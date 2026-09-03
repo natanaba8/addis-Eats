@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import CategoryBar from "./CategoryBar";
+import CategoryBar from "./components/CategoryBar";
 import DishList from "./DishList";
-import OrderForm from "./OrderForm";
+import OrderForm from "./components/OrderForm";
+import { fetchDishes } from "./api";
 
 function Menu() {
   const [category, setCategory] = useState("All");
@@ -17,11 +18,7 @@ function Menu() {
 
     async function loadMenu() {
       try {
-        const response = await fetch("/dishes.json", { signal: controller.signal });
-        if (!response.ok) {
-          throw new Error(`Failed to fetch dishes: ${response.status} ${response.statusText}`);
-        }
-        const data = await response.json();
+        const data = await fetchDishes(controller.signal);
         setDishes(data);
       } catch (fetchError) {
         if (fetchError.name === "AbortError") {
@@ -63,17 +60,21 @@ function Menu() {
     setCategory(nextCategory);
   }
 
+  const searchInput = (
+    <input
+      ref={searchInputRef}
+      type="search"
+      placeholder="Search dishes"
+      aria-label="Search dishes"
+      value={search}
+      onChange={(event) => setSearch(event.target.value)}
+    />
+  );
+
   if (loading) {
     return (
       <main>
-        <input
-          ref={searchInputRef}
-          type="search"
-          placeholder="Search dishes"
-          aria-label="Search dishes"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
+        {searchInput}
         <CategoryBar selected={category} onSelect={handleCategoryChange} />
         <p>Loading menu...</p>
       </main>
@@ -83,14 +84,7 @@ function Menu() {
   if (error) {
     return (
       <main>
-        <input
-          ref={searchInputRef}
-          type="search"
-          placeholder="Search dishes"
-          aria-label="Search dishes"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
+        {searchInput}
         <CategoryBar selected={category} onSelect={handleCategoryChange} />
         <p role="alert">Error loading menu: {error}</p>
       </main>
@@ -99,14 +93,7 @@ function Menu() {
 
   return (
     <main>
-      <input
-        ref={searchInputRef}
-        type="search"
-        placeholder="Search dishes"
-        aria-label="Search dishes"
-        value={search}
-        onChange={(event) => setSearch(event.target.value)}
-      />
+      {searchInput}
       <h2>Addis Eats - Our Menu</h2>
       <p className="order-total">Order total: {total} ETB</p>
       <CategoryBar selected={category} onSelect={handleCategoryChange} />

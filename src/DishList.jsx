@@ -1,4 +1,4 @@
-import Dish from "./Dish";
+import Dish from "./components/Dish";
 
 function DishList({ dishes, onAdd }) {
   if (dishes.length === 0) {

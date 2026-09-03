@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import Menu from './components/Menu';
+import Menu from './Menu';
 import { CartContext } from './context/CartContext';
 import "./css/style.css";
 
