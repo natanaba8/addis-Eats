@@ -15,7 +15,7 @@ function Menu() {
       try {
         const response = await fetch("/dishes.json");
         if (!response.ok) {
-          throw new Error("Failed to fetch menu data");
+          throw new Error(`Failed to fetch dishes: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
         setDishes(data);
