@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CategoryBar from "./components/CategoryBar";
 import DishList from "./DishList";
-import OrderForm from "./components/OrderForm";
 import { useFetch } from "./hooks/useFetch";
 import { useCart } from "./context/useCart";
+import { Link, useSearchParams } from "react-router-dom";
 
 function Menu() {
-  const [category, setCategory] = useState("All");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const category = searchParams.get("category") || "All";
   const [search, setSearch] = useState("");
   const searchInputRef = useRef(null);
   const { data: dishesData, loading, error } = useFetch("/dishes.json", category);
@@ -35,7 +36,7 @@ function Menu() {
   }, [dispatch]);
 
   function handleCategoryChange(nextCategory) {
-    setCategory(nextCategory);
+    setSearchParams(nextCategory === "All" ? {} : { category: nextCategory });
   }
 
   const searchInput = (
@@ -76,7 +77,9 @@ function Menu() {
       <p className="order-total">Order total: {total} ETB</p>
       <CategoryBar selected={category} onSelect={handleCategoryChange} />
       <DishList dishes={visibleDishes} onAdd={addToOrder} />
-      <OrderForm />
+      {visibleDishes.length > 0 && (
+        <Link to={`/menu/${visibleDishes[0].id}`}>View the first dish</Link>
+      )}
     </main>
   );
 }
