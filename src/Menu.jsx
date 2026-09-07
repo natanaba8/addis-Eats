@@ -1,62 +1,40 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CategoryBar from "./components/CategoryBar";
 import DishList from "./DishList";
 import OrderForm from "./components/OrderForm";
-import { fetchDishes } from "./api";
+import { useFetch } from "./hooks/useFetch";
+import { useCart } from "./context/useCart";
 
 function Menu() {
   const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
-  const [dishes, setDishes] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const searchInputRef = useRef(null);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadMenu() {
-      try {
-        const data = await fetchDishes(controller.signal);
-        setDishes(data);
-      } catch (fetchError) {
-        if (fetchError.name === "AbortError") {
-          return;
-        }
-        setError(fetchError.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadMenu();
-
-    return () => controller.abort();
-  }, [category]);
+  const { data: dishesData, loading, error } = useFetch("/dishes.json", category);
+  const { total, dispatch } = useCart();
 
   useEffect(() => {
     searchInputRef.current.focus();
   }, []);
 
-  const categoryDishes = category === "All"
-    ? dishes
-    : dishes.filter((dish) => dish.category === category);
-  const visibleDishes = categoryDishes.filter((dish) =>
-    dish.name.toLowerCase().includes(search.toLowerCase()),
-  );
+  const visibleDishes = useMemo(() => {
+    const dishes = dishesData || [];
+    const categoryDishes = category === "All"
+      ? dishes
+      : dishes.filter((dish) => dish.category === category);
+    return categoryDishes.filter((dish) =>
+      dish.name.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [category, dishesData, search]);
 
   useEffect(() => {
     document.title = `${visibleDishes.length} dishes`;
   }, [visibleDishes.length]);
 
-  function addToOrder(price) {
-    setTotal((previousTotal) => previousTotal + price);
-  }
+  const addToOrder = useCallback((dish) => {
+    dispatch({ type: "add", item: dish });
+  }, [dispatch]);
 
   function handleCategoryChange(nextCategory) {
-    setLoading(true);
-    setError(null);
     setCategory(nextCategory);
   }
 

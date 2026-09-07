@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Dish from "./components/Dish";
 
 function DishList({ dishes, onAdd }) {
@@ -14,4 +15,4 @@ function DishList({ dishes, onAdd }) {
   );
 }
 
-export default DishList;
+export default memo(DishList);

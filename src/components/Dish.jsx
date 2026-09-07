@@ -1,17 +1,12 @@
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import { useCart } from "../context/useCart";
 import "../css/style.css";
 
 function Dish({ id, name, price, category, isSpicy, onAdd }) {
-  const { cart, dispatch } = useContext(CartContext);
-  const isInCart = cart.some((item) => item.id === id);
+  const { items, dispatch } = useCart();
+  const isInCart = items.some((item) => item.id === id);
 
   function handleAdd() {
-    onAdd(price);
-    dispatch({
-      type: "Add",
-      payload: { id, name, price, category, isSpicy },
-    });
+    onAdd({ id, name, price, category, isSpicy });
   }
 
   return (
@@ -22,7 +17,7 @@ function Dish({ id, name, price, category, isSpicy, onAdd }) {
       <p>{isSpicy ? "Spicy" : "Not spicy"}</p>
 
       {isInCart ? (
-        <button onClick={() => dispatch({ type: "Remove", payload: { id } })}>
+        <button onClick={() => dispatch({ type: "remove", id })}>
           Remove from cart
         </button>
       ) : (

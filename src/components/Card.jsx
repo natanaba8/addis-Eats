@@ -1,6 +1,9 @@
+import { useTheme } from "../context/useTheme";
+
 function Card({children}) {
+  const { theme } = useTheme();
   return (
-    <div>
+    <div data-theme={theme}>
       {children}
     </div>
   )

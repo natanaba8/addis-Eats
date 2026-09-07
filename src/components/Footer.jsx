@@ -1,12 +1,11 @@
 import Card from "./Card";
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import { useCart } from "../context/useCart";
 
 function Footer(){
-    const {cart} = useContext(CartContext);
+    const {items} = useCart();
     return <div className="footer">
        <h2 >Natan Abera</h2>
-       {cart.map((item)=>(
+    {items.map((item)=>(
         <Card key={item.id}>
             </Card>
        ))}
