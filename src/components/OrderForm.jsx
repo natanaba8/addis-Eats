@@ -1,4 +1,6 @@
 import { useReducer } from "react";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContextValue";
 
 const initialForm = { name: "", phone: "", area: "" };
 
@@ -14,6 +16,7 @@ function formReducer(form, action) {
 
 function OrderForm() {
   const [form, dispatch] = useReducer(formReducer, initialForm);
+  const { items, total } = useContext(CartContext);
   const isTeleBirrNumber = /^09\d{8}$/.test(form.phone);
 
   function handleChange(event) {
@@ -29,6 +32,13 @@ function OrderForm() {
   return (
     <form className="order-form" onSubmit={handleSubmit}>
       <h2>Delivery details</h2>
+      <p>Cart: {items.length} item{items.length === 1 ? "" : "s"}</p>
+      <p>Checkout total: {total} ETB</p>
+      {items.length > 0 && (
+        <ul>
+          {items.map((item) => <li key={item.id}>{item.name}</li>)}
+        </ul>
+      )}
       <label>
         Name
         <input name="name" value={form.name} onChange={handleChange} required />

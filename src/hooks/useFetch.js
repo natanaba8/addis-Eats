@@ -19,9 +19,11 @@ export function useFetch(url, dependency = "") {
           throw new Error(`Could not load ${url}: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
-        setState({ data, error: null, loading: false, dependency });
+        if (active) {
+          setState({ data, error: null, loading: false, dependency });
+        }
       } catch (fetchError) {
-        if (fetchError.name === "AbortError") {
+        if (!active || fetchError.name === "AbortError") {
           return;
         }
         setState({ data: null, error: fetchError.message, loading: false, dependency });
