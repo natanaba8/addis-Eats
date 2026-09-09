@@ -2,7 +2,8 @@ import { useCart } from "../context/useCart";
 import "../css/style.css";
 
 function Dish({ id, name, price, category, isSpicy, onAdd }) {
-  const { items, dispatch } = useCart();
+  const items = useCart((state) => state.items);
+  const remove = useCart((state) => state.remove);
   const isInCart = items.some((item) => item.id === id);
 
   function handleAdd() {
@@ -17,7 +18,7 @@ function Dish({ id, name, price, category, isSpicy, onAdd }) {
       <p>{isSpicy ? "Spicy" : "Not spicy"}</p>
 
       {isInCart ? (
-        <button onClick={() => dispatch({ type: "remove", id })}>
+        <button onClick={() => remove(id)}>
           Remove from cart
         </button>
       ) : (

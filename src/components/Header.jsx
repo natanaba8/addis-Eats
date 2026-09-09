@@ -6,7 +6,8 @@ import "../css/style.css";
 
 function Header(){
 
-    const { items, dispatch } = useCart();
+    const itemsCount = useCart((state) => state.items.length);
+    const clearCart = useCart((state) => state.clear);
     const { theme, toggleTheme } = useTheme();
     const { data: serverDishesData } = useFetch("/dishes.json");
     const serverDishes = serverDishesData || [];
@@ -17,10 +18,10 @@ function Header(){
             <NavLink to="/menu" className={({ isActive }) => isActive ? "active" : ""}>Menu</NavLink>
             <NavLink to="/checkout" className={({ isActive }) => isActive ? "active" : ""}>Checkout</NavLink>
         </nav>
-        <h2>Cart Item : {items.length}</h2>
+        <h2>Cart Item : {itemsCount}</h2>
         <p>{serverDishes.length} dishes available</p>
         <button onClick={toggleTheme}>Use {theme === "light" ? "dark" : "light"} theme</button>
-        <button onClick={() => dispatch({ type: "clear" })} disabled={!items.length}>Clear cart</button>
+        <button onClick={clearCart} disabled={!itemsCount}>Clear cart</button>
 
     </header>
 }

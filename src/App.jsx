@@ -1,7 +1,6 @@
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Menu from './Menu';
-import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
@@ -27,22 +26,20 @@ function App() {
     <div>
       <AuthProvider>
         <ThemeProvider>
-          <CartProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Layout />}>
-                  <Route index element={<Navigate to="/menu" replace />} />
-                  <Route path="menu" element={<Menu />} />
-                  <Route path="menu/:id" element={<DishDetails />} />
-                  <Route element={<RequireAuth />}>
-                    <Route path="checkout" element={<Checkout />} />
-                  </Route>
-                  <Route path="login" element={<Login />} />
-                  <Route path="*" element={<NotFound />} />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Navigate to="/menu" replace />} />
+                <Route path="menu" element={<Menu />} />
+                <Route path="menu/:id" element={<DishDetails />} />
+                <Route element={<RequireAuth />}>
+                  <Route path="checkout" element={<Checkout />} />
                 </Route>
-              </Routes>
-            </BrowserRouter>
-          </CartProvider>
+                <Route path="login" element={<Login />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
         </ThemeProvider>
       </AuthProvider>
     </div>

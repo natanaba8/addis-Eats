@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CategoryBar from "./components/CategoryBar";
 import DishList from "./DishList";
 import { useFetch } from "./hooks/useFetch";
-import { useCart } from "./context/useCart";
+import { useCart, selectCartTotal } from "./context/useCart";
 import { Link, useSearchParams } from "react-router-dom";
 
 function Menu() {
@@ -11,7 +11,8 @@ function Menu() {
   const [search, setSearch] = useState("");
   const searchInputRef = useRef(null);
   const { data: dishesData, loading, error } = useFetch("/dishes.json", category);
-  const { total, dispatch } = useCart();
+  const total = useCart(selectCartTotal);
+  const addItem = useCart((state) => state.addItem);
 
   useEffect(() => {
     searchInputRef.current.focus();
@@ -32,8 +33,8 @@ function Menu() {
   }, [visibleDishes.length]);
 
   const addToOrder = useCallback((dish) => {
-    dispatch({ type: "add", item: dish });
-  }, [dispatch]);
+    addItem(dish);
+  }, [addItem]);
 
   function handleCategoryChange(nextCategory) {
     setSearchParams(nextCategory === "All" ? {} : { category: nextCategory });

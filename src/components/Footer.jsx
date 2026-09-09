@@ -2,7 +2,7 @@ import Card from "./Card";
 import { useCart } from "../context/useCart";
 
 function Footer(){
-    const {items} = useCart();
+    const items = useCart((state) => state.items);
     return <div className="footer">
        <h2 >Natan Abera</h2>
     {items.map((item)=>(
