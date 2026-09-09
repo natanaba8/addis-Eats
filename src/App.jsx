@@ -25,26 +25,26 @@ function Layout() {
 function App() {
   return (
     <div>
-      <ThemeProvider>
-        <CartProvider>
-          <AuthProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <CartProvider>
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Layout />}>
-                <Route index element={<Navigate to="/menu" replace />} />
-                <Route path="menu" element={<Menu />} />
-                <Route path="menu/:id" element={<DishDetails />} />
-                <Route element={<RequireAuth />}>
-                  <Route path="checkout" element={<Checkout />} />
-                </Route>
-                <Route path="login" element={<Login />} />
-                <Route path="*" element={<NotFound />} />
+                  <Route index element={<Navigate to="/menu" replace />} />
+                  <Route path="menu" element={<Menu />} />
+                  <Route path="menu/:id" element={<DishDetails />} />
+                  <Route element={<RequireAuth />}>
+                    <Route path="checkout" element={<Checkout />} />
+                  </Route>
+                  <Route path="login" element={<Login />} />
+                  <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
             </BrowserRouter>
-          </AuthProvider>
-        </CartProvider>
-      </ThemeProvider>
+          </CartProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </div>
   );
 }
