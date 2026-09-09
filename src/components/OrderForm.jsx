@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useCart, selectCartTotal } from "../context/useCart";
 
 const initialForm = {
@@ -33,13 +33,20 @@ function validate(form) {
 function OrderForm() {
   const [form, setForm] = useState(initialForm);
   const [touched, setTouched] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const fieldRefs = useRef({});
   const items = useCart((state) => state.items);
   const total = useCart(selectCartTotal);
   const errors = validate(form);
+  const isValid = Object.keys(errors).length === 0;
 
   function handleChange(event) {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
+    if (submitError) {
+      setSubmitError("");
+    }
   }
 
   function handleBlur(event) {
@@ -49,10 +56,33 @@ function OrderForm() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    setTouched({ name: true, phone: true, area: true, notes: true });
+
+    if (!isValid) {
+      const firstBadField = ["name", "phone", "area", "notes"].find(
+        (field) => errors[field],
+      );
+
+      if (firstBadField && fieldRefs.current[firstBadField]) {
+        fieldRefs.current[firstBadField].focus();
+      }
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitError("TeleBirr payment failed. Please retry with a valid wallet number.");
+      if (fieldRefs.current.phone) {
+        fieldRefs.current.phone.focus();
+      }
+    }, 600);
   }
 
   return (
-    <form className="order-form" onSubmit={handleSubmit}>
+    <form className="order-form" onSubmit={handleSubmit} noValidate>
       <h2>Delivery details</h2>
       <p>Cart: {items.length} item{items.length === 1 ? "" : "s"}</p>
       <p>Checkout total: {total} ETB</p>
@@ -65,6 +95,9 @@ function OrderForm() {
       <label htmlFor="name">Name</label>
       <input
         id="name"
+        ref={(element) => {
+          fieldRefs.current.name = element;
+        }}
         name="name"
         value={form.name}
         onChange={handleChange}
@@ -80,6 +113,9 @@ function OrderForm() {
       <label htmlFor="phone">TeleBirr number</label>
       <input
         id="phone"
+        ref={(element) => {
+          fieldRefs.current.phone = element;
+        }}
         name="phone"
         value={form.phone}
         onChange={handleChange}
@@ -97,6 +133,9 @@ function OrderForm() {
       <label htmlFor="area">Delivery area</label>
       <select
         id="area"
+        ref={(element) => {
+          fieldRefs.current.area = element;
+        }}
         name="area"
         value={form.area}
         onChange={handleChange}
@@ -117,6 +156,9 @@ function OrderForm() {
       <label htmlFor="notes">Notes (optional)</label>
       <textarea
         id="notes"
+        ref={(element) => {
+          fieldRefs.current.notes = element;
+        }}
         name="notes"
         value={form.notes}
         onChange={handleChange}
@@ -130,7 +172,11 @@ function OrderForm() {
         <p id="notes-error" className="validation-error" role="alert">{errors.notes}</p>
       )}
 
-      <button type="submit">Place order</button>
+      {submitError && <p className="validation-error" role="alert">{submitError}</p>}
+
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Submitting..." : `Place order - ${total} ETB`}
+      </button>
     </form>
   );
 }
