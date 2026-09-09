@@ -8,10 +8,33 @@ const initialForm = {
   notes: "",
 };
 
+function validate(form) {
+  const errors = {};
+
+  if (!form.name.trim()) {
+    errors.name = "Name is required.";
+  }
+
+  if (!/^09\d{8}$/.test(form.phone)) {
+    errors.phone = "Enter a valid 10-digit TeleBirr number.";
+  }
+
+  if (!form.area) {
+    errors.area = "Please choose a delivery area.";
+  }
+
+  if (form.notes.trim().length > 200) {
+    errors.notes = "Notes must be 200 characters or fewer.";
+  }
+
+  return errors;
+}
+
 function OrderForm() {
   const [form, setForm] = useState(initialForm);
   const items = useCart((state) => state.items);
   const total = useCart(selectCartTotal);
+  const errors = validate(form);
 
   function handleChange(event) {
     const { name, value } = event.target;
