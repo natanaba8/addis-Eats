@@ -1,32 +1,25 @@
-import { useReducer } from "react";
+import { useState } from "react";
 import { useCart, selectCartTotal } from "../context/useCart";
 
-const initialForm = { name: "", phone: "", area: "" };
-
-function formReducer(form, action) {
-  if (action.type === "change") {
-    return { ...form, [action.name]: action.value };
-  }
-  if (action.type === "reset") {
-    return initialForm;
-  }
-  return form;
-}
+const initialForm = {
+  name: "",
+  phone: "",
+  area: "",
+  notes: "",
+};
 
 function OrderForm() {
-  const [form, dispatch] = useReducer(formReducer, initialForm);
+  const [form, setForm] = useState(initialForm);
   const items = useCart((state) => state.items);
   const total = useCart(selectCartTotal);
-  const isTeleBirrNumber = /^09\d{8}$/.test(form.phone);
 
   function handleChange(event) {
     const { name, value } = event.target;
-    dispatch({ type: "change", name, value });
+    setForm((current) => ({ ...current, [name]: value }));
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    dispatch({ type: "reset" });
   }
 
   return (
@@ -39,10 +32,17 @@ function OrderForm() {
           {items.map((item) => <li key={item.id}>{item.name}</li>)}
         </ul>
       )}
+
       <label>
         Name
-        <input name="name" value={form.name} onChange={handleChange} required />
+        <input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          autoComplete="name"
+        />
       </label>
+
       <label>
         TeleBirr number
         <input
@@ -51,19 +51,32 @@ function OrderForm() {
           onChange={handleChange}
           inputMode="numeric"
           placeholder="09XXXXXXXX"
-          required
+          autoComplete="tel"
         />
       </label>
-      {!isTeleBirrNumber && form.phone && (
-        <p className="validation-error">Enter a valid 10-digit TeleBirr number.</p>
-      )}
+
       <label>
-        Area
-        <input name="area" value={form.area} onChange={handleChange} required />
+        Delivery area
+        <input
+          name="area"
+          value={form.area}
+          onChange={handleChange}
+          autoComplete="street-address"
+        />
       </label>
-      <button type="submit" disabled={!isTeleBirrNumber || !form.name || !form.area}>
-        Place order
-      </button>
+
+      <label>
+        Notes (optional)
+        <textarea
+          name="notes"
+          value={form.notes}
+          onChange={handleChange}
+          rows={3}
+          placeholder="Any delivery notes?"
+        />
+      </label>
+
+      <button type="submit">Place order</button>
     </form>
   );
 }
