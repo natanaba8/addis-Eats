@@ -55,15 +55,21 @@ function OrderForm() {
         />
       </label>
 
-      <label>
+      <label htmlFor="area">
         Delivery area
-        <input
-          name="area"
-          value={form.area}
-          onChange={handleChange}
-          autoComplete="street-address"
-        />
       </label>
+      <select
+        id="area"
+        name="area"
+        value={form.area}
+        onChange={handleChange}
+      >
+        <option value="">Select an area</option>
+        <option value="Bole">Bole</option>
+        <option value="Kazanchis">Kazanchis</option>
+        <option value="Megenagna">Megenagna</option>
+        <option value="Piassa">Piassa</option>
+      </select>
 
       <label>
         Notes (optional)
