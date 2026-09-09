@@ -32,6 +32,7 @@ function validate(form) {
 
 function OrderForm() {
   const [form, setForm] = useState(initialForm);
+  const [touched, setTouched] = useState({});
   const items = useCart((state) => state.items);
   const total = useCart(selectCartTotal);
   const errors = validate(form);
@@ -39,6 +40,11 @@ function OrderForm() {
   function handleChange(event) {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
+  }
+
+  function handleBlur(event) {
+    const { name } = event.target;
+    setTouched((current) => ({ ...current, [name]: true }));
   }
 
   function handleSubmit(event) {
@@ -56,36 +62,47 @@ function OrderForm() {
         </ul>
       )}
 
-      <label>
-        Name
-        <input
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          autoComplete="name"
-        />
-      </label>
+      <label htmlFor="name">Name</label>
+      <input
+        id="name"
+        name="name"
+        value={form.name}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        autoComplete="name"
+        aria-invalid={touched.name && Boolean(errors.name)}
+        aria-describedby={touched.name && errors.name ? "name-error" : undefined}
+      />
+      {touched.name && errors.name && (
+        <p id="name-error" className="validation-error" role="alert">{errors.name}</p>
+      )}
 
-      <label>
-        TeleBirr number
-        <input
-          name="phone"
-          value={form.phone}
-          onChange={handleChange}
-          inputMode="numeric"
-          placeholder="09XXXXXXXX"
-          autoComplete="tel"
-        />
-      </label>
+      <label htmlFor="phone">TeleBirr number</label>
+      <input
+        id="phone"
+        name="phone"
+        value={form.phone}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        inputMode="numeric"
+        placeholder="09XXXXXXXX"
+        autoComplete="tel"
+        aria-invalid={touched.phone && Boolean(errors.phone)}
+        aria-describedby={touched.phone && errors.phone ? "phone-error" : undefined}
+      />
+      {touched.phone && errors.phone && (
+        <p id="phone-error" className="validation-error" role="alert">{errors.phone}</p>
+      )}
 
-      <label htmlFor="area">
-        Delivery area
-      </label>
+      <label htmlFor="area">Delivery area</label>
       <select
         id="area"
         name="area"
         value={form.area}
         onChange={handleChange}
+        onBlur={handleBlur}
+        aria-invalid={touched.area && Boolean(errors.area)}
+        aria-describedby={touched.area && errors.area ? "area-error" : undefined}
       >
         <option value="">Select an area</option>
         <option value="Bole">Bole</option>
@@ -93,17 +110,25 @@ function OrderForm() {
         <option value="Megenagna">Megenagna</option>
         <option value="Piassa">Piassa</option>
       </select>
+      {touched.area && errors.area && (
+        <p id="area-error" className="validation-error" role="alert">{errors.area}</p>
+      )}
 
-      <label>
-        Notes (optional)
-        <textarea
-          name="notes"
-          value={form.notes}
-          onChange={handleChange}
-          rows={3}
-          placeholder="Any delivery notes?"
-        />
-      </label>
+      <label htmlFor="notes">Notes (optional)</label>
+      <textarea
+        id="notes"
+        name="notes"
+        value={form.notes}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        rows={3}
+        placeholder="Any delivery notes?"
+        aria-invalid={touched.notes && Boolean(errors.notes)}
+        aria-describedby={touched.notes && errors.notes ? "notes-error" : undefined}
+      />
+      {touched.notes && errors.notes && (
+        <p id="notes-error" className="validation-error" role="alert">{errors.notes}</p>
+      )}
 
       <button type="submit">Place order</button>
     </form>
